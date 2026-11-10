@@ -4,9 +4,9 @@ Zespół nie wskazał jeszcze ostatecznego tematu. Poniższe źródła obejmują
 
 | Źródło / URL / API | Format | Metoda pobrania | Kto odpowiada | Termin próbki |
 |---|---|---|---|---|
-| Piłka: football-data.co.uk, Premier League 2024/25: https://www.football-data.co.uk/mmz4281/2425/E0.csv | CSV, jeden mecz w wierszu; m.in. data, gospodarz, gość, gole i wynik | Skrypt `scripts/pobierz_pilka.py` pobiera plik przez HTTPS i zapisuje lokalnie w `data/raw/`; bez scrapingu HTML | [Osoba 1 – imię i nazwisko] (Data Engineer) | 10.11.2026 – wykonano |
-| Rower: Otwarte Dane – wartości liczników rowerowych: https://dane.gov.pl/pl/dataset/2274,wartosci-licznikow-rowerowych/resource/32554 | Zasób do pobrania przez stronę/API; format i zakres trzeba potwierdzić dla wybranego miasta | Pobranie zasobu / API po sprawdzeniu metadanych; bez scrapingu | [Osoba 2 – imię i nazwisko] (Data Engineer) | 13.11.2026 – do wykonania, jeśli wybierzemy temat rowerowy |
-| Rower: dane o długości infrastruktury rowerowej dla tego samego miasta i okresu; portal otwartych danych/geoportal wybranego miasta (adres do ustalenia po wyborze miasta) | Do potwierdzenia: CSV lub dane przestrzenne (np. GeoJSON) | Pobranie oficjalnego eksportu/API; nie scrapować, dopóki warunki serwisu nie zostaną sprawdzone | [Osoba 3 – imię i nazwisko] (Analityk) | 13.11.2026 – do wykonania, jeśli wybierzemy temat rowerowy |
+| Piłka: football-data.co.uk, Premier League 2024/25: https://www.football-data.co.uk/mmz4281/2425/E0.csv | CSV, jeden mecz w wierszu; m.in. data, gospodarz, gość, gole i wynik | Skrypt `scripts/pobierz_pilka.py` pobiera plik przez HTTPS i zapisuje lokalnie w `data/raw/`; bez scrapingu HTML | Dawid Zemanek | 10.11.2026 – wykonano |
+| Rower: Otwarte Dane – wartości liczników rowerowych: https://dane.gov.pl/pl/dataset/2274,wartosci-licznikow-rowerowych/resource/32554 | Zasób do pobrania przez stronę/API; format i zakres trzeba potwierdzić dla wybranego miasta | Pobranie zasobu / API po sprawdzeniu metadanych; bez scrapingu | Mateusz Ozga | 13.11.2026 – do wykonania, jeśli wybierzemy temat rowerowy |
+| Rower: dane o długości infrastruktury rowerowej dla tego samego miasta i okresu; portal otwartych danych/geoportal wybranego miasta (adres do ustalenia po wyborze miasta) | Do potwierdzenia: CSV lub dane przestrzenne (np. GeoJSON) | Pobranie oficjalnego eksportu/API; nie scrapować, dopóki warunki serwisu nie zostaną sprawdzone | Maksymilian Wrześniewski | 13.11.2026 – do wykonania, jeśli wybierzemy temat rowerowy |
 
 ## Wykonane próbne pobranie: piłka nożna
 
