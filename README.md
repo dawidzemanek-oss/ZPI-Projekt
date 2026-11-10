@@ -9,3 +9,7 @@ Projekt:
 Język: Python
 Środowisko: Google Colab
 Komunikacja: Messenger
+
+• Data Engineer – Mateusz Ozga \n
+• Analityk – Dawid Zemanek \n
+• ML Engineer – Maksymilian Wrześniewski \n
