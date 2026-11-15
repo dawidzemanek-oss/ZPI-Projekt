@@ -1,7 +1,5 @@
 # Podział ról i plan pracy do Spotkania 3
 
-Zespół liczy trzy osoby. Role mogą się pokrywać, a przy wyborze tematu rowerowego Dawid i Maksymilian wspólnie potwierdzą dostępność źródeł.
-
 | Osoba | Rola | Odpowiedzialność | Zadanie / Issue | Termin |
 |---|---|---|---|---|
 | Mateusz Ozga | Data Engineer | Pobranie danych piłkarskich; w razie wyboru rowerów – pobranie danych liczników | `#1 Pobierz i opisz próbkę danych` | 10.11.2026 – wykonano dla piłki |
