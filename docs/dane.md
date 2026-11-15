@@ -12,5 +12,3 @@
 1.  wykonane próbne pobranie 300 rekordów piłkarskich skryptem; sprawdzić strukturę i potwierdzić, czy wybieramy ten temat.
 2.  zespół wybiera jeden temat i tworzy/przypisuje Issue konkretnym członkom; przy temacie rowerowym potwierdza oba źródła oraz porównywalność okresu i obszaru.
 3.  zatwierdzić pytanie badawcze, zakres danych i plan dalszego pobierania; zaktualizować README oraz team log.
-
-Terminy 13.11 są robocze. Jeśli Spotkanie 3 odbywa się wcześniej, należy przesunąć je na dzień przed spotkaniem.
