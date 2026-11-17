@@ -1,11 +1,8 @@
-# ZPI-Projekt
-S.P.O.R.T.
-
 # Real Estate Price Prediction
 
 ## Zespołowy Projekt Analityczny
 
-### Zespół
+### Zespół: S.P.O.R.T.
 - Dawid Zemanek
 - Mateusz Ozga
 - Maksymilian Wrześniewski
