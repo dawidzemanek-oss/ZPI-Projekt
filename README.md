@@ -1,17 +1,48 @@
 # ZPI-Projekt
 S.P.O.R.T.
 
-Propozycje tematów i danych:
-Czy mecze wyjazdowe wpływają na wyniki drużyn piłkarskich? dane z Kaggle albo z otwartych zbiorów football-data.co.uk
+# Real Estate Price Prediction
 
-Czy w miastach z większą liczbą ścieżek rowerowych ludzie częściej jeżdżą rowerem? dane miejskie z licznikami rowerowymi
+## Zespołowy Projekt Analityczny
 
-Projekt:
-Język: Python
-Środowisko: Google Colab
-Komunikacja: Messenger
+### Zespół
+- Dawid Zemanek
+- Mateusz Ozga
+- Maksymilian Wrześniewski
 
+### Cel projektu
+Predykcja cen mieszkań w Krakowie na podstawie
+parametrów nieruchomości i danych lokalizacyjnych.
 
-• Data Engineer – Mateusz Ozga
-• Analityk – Dawid Zemanek
-• ML Engineer – Maksymilian Wrześniewski
+### Pytanie badawcze
+Czy uwzględnienie danych o lokalizacji i otoczeniu
+mieszkania poprawia dokładność przewidywania ceny?
+
+### Źródła danych
+1. Rejestr Cen Nieruchomości (RCN) – Geoportal
+2. OpenStreetMap – Overpass API
+3. GUS – Bank Danych Lokalnych
+
+### Technologie
+- Python
+- pandas, NumPy
+- scikit-learn
+- CatBoost
+- GeoPandas
+- matplotlib, seaborn
+- SHAP
+- Jupyter Notebook / VS Code
+- GitHub
+
+### Organizacja
+- Komunikacja: Discord
+- Zarządzanie zadaniami: GitHub Issues
+- Wersjonowanie: Git
+- Dokumentacja spotkań: team-log/
+
+### Planowane rezultaty
+- Dataset mieszkań i ich parametrów
+- Raport EDA
+- Model predykcyjny
+- Interpretacja czynników cenotwórczych
+- Raport końcowy z rekomendacjami
