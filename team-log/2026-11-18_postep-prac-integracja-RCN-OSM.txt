@@ -1,0 +1,107 @@
+Dziennik prac – 18.11.2026
+
+Projekt: Predykcja cen transakcyjnych mieszkań w Warszawie z wykorzystaniem danych RCN i OpenStreetMap  
+Rodzaj wpisu: Podsumowanie wykonanych prac (nie protokół ze spotkania zespołu)  
+Zakres: Pozyskanie danych, przetworzenie geometrii, integracja źródeł i konstrukcja cech przestrzennych.
+
+1. Cel prac
+
+Przygotowanie zbioru danych do analizy eksploracyjnej oraz budowy modeli przewidujących ceny transakcyjne lokali mieszkalnych w Warszawie. Oprócz cech samych lokali celem było pozyskanie informacji o lokalizacji i otoczeniu nieruchomości.
+
+2. Pozyskanie danych transakcyjnych – RCN
+
+- Źródło: Rejestr Cen Nieruchomości (RCN), usługa WFS Geoportalu: https://mapy.geoportal.gov.pl/wss/service/rcn.
+- Warstwa: ms:lokale.
+- Zastosowane warunki: Warszawa (TERYT = 1465), funkcja lokalu mieszkalna, data dokumentu DOK_DATA od 2023-01-01 do przed 2027-01-01.
+- Pobieranie stronicowane przez WFS, po 500 obiektów, z sortowaniem po gid.
+- Zapisano 180 plików stron GML w postaci skompresowanej (.gml.gz) w Google Drive, aby zachować oryginalną geometrię i umożliwić ponowne przetwarzanie bez kolejnego pobierania.
+- Po połączeniu stron otrzymano 89 738 rekordów lokali mieszkalnych, zgodnie z wynikiem zapytania resultType=hits; 0 duplikatów identyfikatora gid.
+- Liczby rekordów według roku dokumentu: 2023 – 23 612, 2024 – 24 540, 2025 – 31 923, 2026 – 9 663. Dane za 2026 rok są niepełne w odniesieniu do całego roku.
+- Do zbioru włączono m.in. cenę brutto lokalu (LOK_CENA_BRUTTO), powierzchnię użytkową (LOK_POW_UZYT), liczbę izb (LOK_LICZBA_IZB), kondygnację (LOK_NR_KOND), adres, datę dokumentu oraz rodzaj rynku.
+
+Plik po etapie: warszawa_mieszkania_2023_2026.csv.
+
+3. Odczyt geometrii i przypisanie dzielnic
+
+- Odczytano współrzędne punktów bezpośrednio z zapisanych plików GML (gml:Point, gml:pos).
+- Rozpoznano układ źródłowy EPSG:2180 (PL-1992) i przeliczono współrzędne do EPSG:4326 (szerokość i długość geograficzna), uwzględniając kolejność osi w GML.
+- 89 738 / 89 738 rekordów miało współrzędne; wszystkie znalazły się w przyjętym orientacyjnym prostokącie kontrolnym Warszawy.
+- Obliczono odległość w linii prostej do umownego punktu centralnego miasta (okolice Pałacu Kultury i Nauki) – distance_center_km.
+- Pobrano poligony granic 18 dzielnic Warszawy z usługi ArcGIS REST i przypisano dzielnice do mieszkań przez złączenie przestrzenne (spatial join).
+- 89 738 / 89 738 mieszkań otrzymało nazwę dzielnicy; brak nieprzypisanych lokalizacji.
+- W zbiorze występuje 15 344 unikalnych lokalizacji punktowych – część mieszkań znajduje się pod tym samym adresem / w tej samej lokalizacji.
+
+Pliki po etapach: warszawa_mieszkania_geo.csv, warszawa_mieszkania_dzielnice.csv.
+
+4. Integracja z OpenStreetMap – sklepy i parki
+
+- Źródło: OpenStreetMap, pobieranie przy użyciu biblioteki OSMnx i publicznego API Overpass.
+- W celu ograniczenia rozmiaru zapytań obszar podzielono na siatkę 3 × 3; dziewięć fragmentów zapisano lokalnie jako pliki GeoPackage (.gpkg).
+- Pobrano 19 816 obiektów przed deduplikacją i 19 797 unikalnych po deduplikacji według identyfikatora OSM.
+- Wyodrębniono 18 710 obiektów sklepów i 474 obiekty parków.
+- Dla każdego z 15 344 unikalnych punktów obliczono, z wykorzystaniem STRtree i geometrii w EPSG:2180:
+  - shops_500m – liczba obiektów shop w promieniu 500 m;
+  - parks_1000m – liczba obiektów leisure=park w promieniu 1000 m.
+- Wyniki przypisano do wszystkich rekordów mieszkań.
+- Średnie wyniki: 64,13 sklepów do 500 m i 5,57 parków do 1000 m; mediany odpowiednio 45 i 5.
+
+Plik po etapie: warszawa_mieszkania_osm.csv.
+
+5. Integracja z OpenStreetMap – szkoły i komunikacja
+
+- Pobrano kolejnych 9 fragmentów GeoPackage dla szkół, przystanków autobusowych i stacji metra.
+- Łącznie 6 480 obiektów przed deduplikacją i 6 471 po deduplikacji.
+- Wydzielono 979 obiektów szkół (amenity=school) i 5 305 obiektów przystanków autobusowych (highway=bus_stop).
+- W pobranych danych znajdowały się 62 obiekty związane z metrem. Do wyznaczania odległości wybrano 38 obiektów z tagami railway=station i station=subway; wyłączono 23 obiekty oznaczone jako planowane (railway=proposed). Pozostały obiekt nie został uwzględniony w tej definicji.
+- Z użyciem indeksu przestrzennego obliczono:
+  - schools_1000m – liczbę obiektów szkolnych w promieniu 1000 m;
+  - bus_stops_500m – liczbę oznaczonych obiektów przystankowych w promieniu 500 m;
+  - distance_metro_m – odległość w linii prostej do najbliższej geometrii stacji metra.
+- Średnie wartości: 10,34 szkoły do 1000 m, 10,57 przystanku do 500 m oraz 2679,76 m do najbliższego obiektu stacji metra.
+- Mediany: odpowiednio 7, 10 oraz 2077,13 m.
+
+6. Aktualny rezultat
+
+Powstał plik warszawa_mieszkania_full.csv, zawierający:
+
+- 89 738 rekordów lokali mieszkalnych;
+- 45 kolumn;
+- cechy transakcji i lokalu z RCN;
+- współrzędne GPS i nazwy dzielnic;
+- odległość od centrum miasta;
+- liczbę sklepów, parków, szkół i przystanków w określonych promieniach;
+- odległość do najbliższego obiektu stacji metra.
+
+Lokalizacja robocza w Google Drive: /content/drive/MyDrive/ZPA_RCN_Warszawa/.
+
+Wszystkie pięć obliczonych cech otoczenia ma wartości dla 89 738 rekordów. Integracja danych została zakończona; zbiór nie przeszedł jeszcze pełnego audytu jakości ani czyszczenia danych do modelowania.
+
+7. Problemy i rozwiązania
+
+- Publiczny serwer Overpass okresowo zwracał błąd 502 Bad Gateway z powodu przeciążenia. Dodano zapisywanie pobranych fragmentów, pomijanie już zapisanych plików i ponawianie nieudanych zapytań z opóźnieniem.
+- Przy pobieraniu RCN zastosowano stabilne stronicowanie i deduplikację po gid.
+- Datę DOK_DATA odczytywano z zagnieżdżonej struktury GML/XML.
+- Dla metra usunięto z obliczeń obiekty oznaczone jako planowane, aby nie traktować ich jako istniejących stacji.
+- Do obliczeń przestrzennych wykorzystano układ metryczny EPSG:2180 i indeks przestrzenny, zamiast wykonywać osobne zapytania do OSM dla każdego mieszkania.
+
+8. Ograniczenia i zagadnienia do sprawdzenia
+
+- DOK_DATA jest datą dokumentu z RCN i nie musi być tożsama z datą ekonomicznego zawarcia transakcji.
+- Rekord lokalu nie musi odpowiadać odrębnej, samodzielnej transakcji; należy zbadać transakcje obejmujące więcej niż jeden lokal i ewentualną sprzedaż udziałów.
+- Obiekty OSM mogą zawierać kilka reprezentacji tego samego miejsca, np. budynek i punkt szkoły albo wiele peronów/przystanków w jednej lokalizacji.
+- 38 obiektów OSM metra nie zostało niezależnie potwierdzonych jako 38 odrębnych, czynnych stacji; odległość do geometrii nie oznacza odległości pieszej do wejścia.
+- Wysokie liczby sklepów (maksimum 510 w promieniu 500 m) oraz parków wymagają wizualnej i merytorycznej weryfikacji.
+- Dane OSM opisują stan bazy w chwili pobrania, podczas gdy transakcje RCN dotyczą lat 2023–2026. Może to powodować niezgodność czasową.
+- Przed publiczną publikacją plików danych trzeba sprawdzić rozmiary, licencje źródeł, warunki ponownego udostępniania i zawartość potencjalnie wrażliwych pól. Pełne surowe dane i cache nie powinny być automatycznie dodawane do repozytorium.
+
+9. Kolejne działania
+
+1. Audyt braków danych, cen, powierzchni, udziałów w nieruchomościach i transakcji wielolokalowych.
+2. Weryfikacja wartości skrajnych i potencjalnych duplikatów obiektów OSM.
+3. Analiza eksploracyjna (EDA): ceny za m², dzielnice, zmiany w czasie, rynek pierwotny i wtórny oraz wpływ cech otoczenia.
+4. Opracowanie zasad czyszczenia danych i podziału zbioru bez niekontrolowanego przecieku informacji między lokalizacjami.
+5. Przygotowanie modeli bazowych i porównanie jakości predykcji z wykorzystaniem i bez wykorzystania cech przestrzennych.
+6. Weryfikacja licencji, rozmiarów i zakresu danych przed umieszczeniem artefaktów w repozytorium GitHub.
+
+==================================================
+Uwagi organizacyjne: Ten wpis dokumentuje stan wykonanych prac na 18.11.2026. Nie potwierdza spotkania zespołu, podziału obowiązków ani udziału konkretnych osób – takie informacje można dopisać wyłącznie zgodnie z rzeczywistym przebiegiem pracy.
