@@ -103,5 +103,3 @@ Wszystkie pięć obliczonych cech otoczenia ma wartości dla 89 738 rekordów. I
 5. Przygotowanie modeli bazowych i porównanie jakości predykcji z wykorzystaniem i bez wykorzystania cech przestrzennych.
 6. Weryfikacja licencji, rozmiarów i zakresu danych przed umieszczeniem artefaktów w repozytorium GitHub.
 
-==================================================
-Uwagi organizacyjne: Ten wpis dokumentuje stan wykonanych prac na 18.11.2026. Nie potwierdza spotkania zespołu, podziału obowiązków ani udziału konkretnych osób – takie informacje można dopisać wyłącznie zgodnie z rzeczywistym przebiegiem pracy.
